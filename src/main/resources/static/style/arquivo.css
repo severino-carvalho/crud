@@ -44,3 +44,17 @@
 		.btn-reset {
 			background-color: darkorange;
 		}
+		
+		.table {
+			border: 1px solid slategray;
+			border-collapse: collapse
+		}
+		
+		.tr {
+			border: 1px solid slategray	;
+			}
+		
+		.td {
+			border: 1px solid slategray	;
+			text-align: center;
+		}

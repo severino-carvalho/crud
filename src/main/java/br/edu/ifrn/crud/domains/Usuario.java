@@ -1,5 +1,7 @@
 package br.edu.ifrn.crud.domains;
 
+import java.util.Objects;
+
 public class Usuario {
 	// Atributos da classe
 	private int uid;
@@ -9,6 +11,25 @@ public class Usuario {
 	private String sexo;
 	private String profissao;
 
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(uid);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return uid == other.uid;
+	}
+	
+	
 	// Construtor da classe
 	public Usuario() {
 

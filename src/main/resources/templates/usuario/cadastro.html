@@ -19,28 +19,19 @@
 		<br />
 	</div>
 	
-	<div th:if="${msgErro} != false">
-		<b th:text="${msgErro}" style="color: red;"></b>
-		<br />
-	</div>
 
 	<form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
+
+		<input type="hidden" th:field="${usuario.uid}"/>
+
 		<table>
-			<!-- 
-			private int uid;
-			private String nome;
-			private String senha;
-			private String sexo;
-			private String profissao;
-			
-		 -->
 			<tr>
 				<td>Nome:</td>
 				<td>
 					<input type="text" th:field="${usuario.nome}" />
 				</td>
 			</tr>
-
+			
 			<tr>
 				<td>Email:</td>
 				<td>
@@ -76,7 +67,7 @@
 
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input class="btn btn-conf" type="submit" value="Cadastrar" />
+					<input class="btn btn-conf" type="submit" th:value="${usuario.uid} == 0 ? Cadastrar : Editar" />
 					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/home" formmethod="GET" />
 					<input class="btn btn-reset" type="reset" value="Limpar" />
 				</td>
