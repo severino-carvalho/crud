@@ -42,7 +42,7 @@
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<input class="btn btn-conf" type="submit" value="Buscar" />
-					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/home" formmethod="GET" />
+					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/" formmethod="GET" />
 					<input class="btn btn-reset" type="reset" value="Limpar" />
 				</td>
 			</tr>
@@ -54,6 +54,7 @@
 			<tr class="tr">
 				<th class="td">Nome:</th>
 				<th class="td">Email:</th>
+				<th class="td" th:if="${mostrarTodosDados == true}">Telefone</th>
 				<th class="td" th:if="${mostrarTodosDados == true}">Sexo</th>
 				<th class="td" th:if="${mostrarTodosDados == true}">Profissão</th>
 				<th class="td">Opções</th>
@@ -61,13 +62,14 @@
 			<tr class="tr" th:each="u : ${usuariosEncontrados}">
 				<td class="td" th:text="${u.nome}"></td>
 				<td class="td" th:text="${u.email}"></td>
+				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.telefone}"></td>
 				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.sexo}"></td>
 				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.profissao}"></td>
 				<td class="td">
-					<a th:href="'/usuarios/editar/' + ${u.uid}">
+					<a th:href="'/usuarios/editar/' + ${u.id}">
 						Editar
 					</a> |
-					<a th:href="'/usuarios/remover' + ${u.uid}" onclick="">
+					<a th:href="'/usuarios/remover' + ${u.id}" onclick="">
 						Remover
 					</a>
 				</td>
