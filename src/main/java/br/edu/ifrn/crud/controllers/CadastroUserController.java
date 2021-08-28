@@ -34,31 +34,34 @@ public class CadastroUserController {
 
 	@SuppressWarnings("unchecked")
 	@PostMapping("/salvar")
-	public String salvarUser(Usuario usuario, RedirectAttributes rediAttr, HttpSession sessao) {
-		Integer uid = (Integer) sessao.getAttribute("uid");
+	public String salvarUser(Usuario usuario, RedirectAttributes attr, HttpSession sessao) {
+
+		Integer id = (Integer) sessao.getAttribute("id");
 		List<Usuario> usuariosCadastrados = (List<Usuario>) sessao.getAttribute("usuariosCadastrados");
 
-		if (uid == null) {
-			uid = 1;
+		if (id == null) {
+			id = 1;
 		}
 
 		if (usuariosCadastrados == null) {
 			usuariosCadastrados = new ArrayList<>();
 		}
 
-		if (usuario.getUid() == 0) {
-			usuario.setUid(uid);
+		if (usuario.getId() == 0) {
+			usuario.setId(id);
 			usuariosCadastrados.add(usuario);
-			uid++;
-			sessao.setAttribute("uid", uid);
+			
+			id++;
+			
+			sessao.setAttribute("id", id);
 			sessao.setAttribute("usuariosCadastrados", usuariosCadastrados);
 
-			rediAttr.addFlashAttribute("msgSucesso", "Cadastro de usuário realizado com sucesso!");
+			attr.addFlashAttribute("msgSucesso", "Cadastro de usuário realizado com sucesso!");
 		} else {
 			usuariosCadastrados.remove(usuario);
 			usuariosCadastrados.add(usuario);
 
-			rediAttr.addFlashAttribute("msgSucesso", "Edição de usuário realizada com sucesso!");
+			attr.addFlashAttribute("msgSucesso", "Edição de usuário realizada com sucesso!");
 			return "/usuario/busca";
 		}
 
@@ -72,7 +75,7 @@ public class CadastroUserController {
 		List<Usuario> usuariosCadastrados = (List<Usuario>) sessao.getAttribute("usuariosCadastrados");
 
 		Usuario usuario = new Usuario();
-		usuario.setUid(idUser);
+		usuario.setId(idUser);
 
 		int pos = usuariosCadastrados.indexOf(usuario);
 		usuario = usuariosCadastrados.get(pos);
