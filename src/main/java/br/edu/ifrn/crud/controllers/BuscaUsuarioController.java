@@ -28,7 +28,7 @@ public class BuscaUsuarioController {
 
 	@GetMapping("/busca")
 	public String entrarBusca() {
-		return "usuario/busca";
+		return "/usuario/busca";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -36,8 +36,6 @@ public class BuscaUsuarioController {
 	public String buscar(@RequestParam(name = "nome", required = false) String nome,
 			@RequestParam(name = "mostrarTodosDados", required = false) Boolean mostrarTodosDados, HttpSession sessao,
 			ModelMap model) {
-
-		/* Obtém a lista de todos os usuários em memória */
 
 		List<Usuario> usuariosCadastrados = (List<Usuario>) sessao.getAttribute("usuariosCadastrados");
 
