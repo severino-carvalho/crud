@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Busca de Usuáro</title>
+
+	<link rel="stylesheet" href="/style/arquivo.css" />
+</head>
+
+<body>
+	<h1 style="text-align: center;">Busca de usuário</h1>
+
+	<div th:if="${msgSucesso} != false">
+		<b th:text="${msgSucesso}" style="color: green;"></b>
+		<br />
+	</div>
+
+	<div th:if="${msgErro} != false">
+		<b th:text="${msgErro}" style="color: red;"></b>
+		<br />
+	</div>
+
+	<form th:action="@{/usuarios/buscar}" method="GET">
+		<table>
+			<tr>
+				<td>Nome:</td>
+				<td>
+					<input type="text" th:name="nome" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="checkbox" th:name="mostrarTodosDados" th:value="true" />
+					Mostrar todos os dados do usuários
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input class="btn btn-conf" type="submit" value="Buscar" />
+					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/" formmethod="GET" />
+					<input class="btn btn-reset" type="reset" value="Limpar" />
+				</td>
+			</tr>
+		</table>
+	</form>
+
+	<div th:if="${usuariosEncontrados} != null">
+		<table class="table">
+			<tr class="tr">
+				<th class="td">Nome:</th>
+				<th class="td">Email:</th>
+				<th class="td" th:if="${mostrarTodosDados == true}">Telefone</th>
+				<th class="td" th:if="${mostrarTodosDados == true}">Sexo</th>
+				<th class="td" th:if="${mostrarTodosDados == true}">Profissão</th>
+				<th class="td">Opções</th>
+			</tr>
+			<tr class="tr" th:each="u : ${usuariosEncontrados}">
+				<td class="td" th:text="${u.nome}"></td>
+				<td class="td" th:text="${u.email}"></td>
+				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.telefone}"></td>
+				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.sexo}"></td>
+				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.profissao}"></td>
+				<td class="td">
+					<a th:href="'/usuarios/editar/' + ${u.id}">
+						Editar
+					</a> |
+					<a th:href="'/usuarios/remover/' + ${u.id}" onclick="if(!confirm('Você deseja realemnte remover o usuário?')) return false">
+						Remover
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+
+</html>

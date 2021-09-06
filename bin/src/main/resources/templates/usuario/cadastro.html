@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Cadastro de Usuáro</title>
+
+	<link rel="stylesheet" href="/style/arquivo.css" />
+</head>
+
+<body>
+	<h1 style="text-align: center;">Cadastro de usuário</h1>
+
+	<div th:if="${msgSucesso} != false">
+		<b th:text="${msgSucesso}" style="color: green;"></b>
+		<br />
+	</div>
+
+
+	<form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
+
+		<div th:if="${#fields.hasAnyErrors()}">
+			<ul>
+				<li th:each="e : ${#fields.detailedErrors()}">
+					<b th:text="${e.message}" style="color: red;"></b>
+				</li>
+			</ul>
+		</div>
+		
+		<div th:if="${msgErro} != null">
+			<ul>
+				<li th:each="e : ${msgErro}">
+					<b th:text="${e}" style="color: red;"></b>
+				</li>
+			</ul>
+		</div>
+
+		<input type="hidden" th:field="${usuario.id}" />
+
+		<table>
+			<tr>
+				<td>Nome:</td>
+				<td>
+					<input type="text" th:field="${usuario.nome}" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>Email:</td>
+				<td>
+					<input type="email" th:field="${usuario.email}" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>Telefone:</td>
+				<td>
+					<input type="tel" th:field="${usuario.telefone}" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>Senha:</td>
+				<td>
+					<input type="password" th:field="${usuario.senha}" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>Sexo:</td>
+				<td>
+					<input type="radio" th:field="${usuario.sexo}" th:value="M" /> Masculino
+					<input type="radio" th:field="${usuario.sexo}" th:value="F" /> Feminino
+				</td>
+			</tr>
+
+			<tr>
+				<td>Profissão:</td>
+				<td>
+					<select th:field="${usuario.profissao}">
+						<option value="">Opções...</option>
+						<option th:each="p : ${profissoes}" th:text="${p}" th:value="${p}"></option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input class="btn btn-conf" type="submit" th:value="${usuario.id} == 0 ? Cadastrar : Editar" />
+					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/" formmethod="GET" />
+					<input class="btn btn-reset" type="reset" value="Limpar" />
+				</td>
+			</tr>
+		</table>
+	</form>
+
+</body>
+
+</html>
