@@ -69,7 +69,7 @@
 					<a th:href="'/usuarios/editar/' + ${u.id}">
 						Editar
 					</a> |
-					<a th:href="'/usuarios/remover' + ${u.id}" onclick="">
+					<a th:href="'/usuarios/remover/' + ${u.id}" onclick="if(!confirm('Você deseja realemnte remover o usuário?')) return false">
 						Remover
 					</a>
 				</td>

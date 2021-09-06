@@ -22,6 +22,22 @@
 
 	<form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
 
+		<div th:if="${#fields.hasAnyErrors()}">
+			<ul>
+				<li th:each="e : ${#fields.detailedErrors()}">
+					<b th:text="${e.message}" style="color: red;"></b>
+				</li>
+			</ul>
+		</div>
+		
+		<div th:if="${msgErro} != null">
+			<ul>
+				<li th:each="e : ${msgErro}">
+					<b th:text="${e}" style="color: red;"></b>
+				</li>
+			</ul>
+		</div>
+
 		<input type="hidden" th:field="${usuario.id}" />
 
 		<table>
