@@ -33,6 +33,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td>Email:</td>
+				<td>
+					<input type="email" th:name="email" />
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2">
 					<input type="checkbox" th:name="mostrarTodosDados" th:value="true" />
 					Mostrar todos os dados do usuários
@@ -49,7 +55,7 @@
 		</table>
 	</form>
 
-	<div th:if="${usuariosEncontrados} != null">
+	<div th:if="${not #lists.isEmpty(usuariosEncontrados)}">
 		<table class="table">
 			<tr class="tr">
 				<th class="td">Nome:</th>
@@ -69,7 +75,8 @@
 					<a th:href="'/usuarios/editar/' + ${u.id}">
 						Editar
 					</a> |
-					<a th:href="'/usuarios/remover/' + ${u.id}" onclick="if(!confirm('Você deseja realemnte remover o usuário?')) return false">
+					<a th:href="'/usuarios/remover/' + ${u.id}"
+						onclick="if(!confirm('Você deseja realemnte remover o usuário?')) return false">
 						Remover
 					</a>
 				</td>
