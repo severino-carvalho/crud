@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class BuscaUsuarioController {
 	}
 
 	@GetMapping("/buscar")
+	@Transactional(readOnly = true)
 	public String buscar(@RequestParam(name = "nome", required = false) String nome,
 			@RequestParam(name = "nome", required = false) String email,
 			@RequestParam(name = "mostrarTodosDados", required = false) Boolean mostrarTodosDados, ModelMap model) {
@@ -44,6 +46,7 @@ public class BuscaUsuarioController {
 	}
 
 	@GetMapping("/remover/{id}")
+	@Transactional(readOnly = false)
 	public String remover(@PathVariable("id") Integer idUsuario, RedirectAttributes attr) {
 
 		usuarioRepository.deleteById(idUsuario);

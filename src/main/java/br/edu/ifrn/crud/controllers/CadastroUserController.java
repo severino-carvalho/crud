@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class CadastroUserController {
 	}
 
 	@PostMapping("/salvar")
+	@Transactional(readOnly = false)
 	public String salvarUser(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap modelo) {
 
 		// Se houver erros no objeto usuário preenchido ele vai ser capturado no IF e
@@ -53,6 +55,7 @@ public class CadastroUserController {
 
 		try {
 			usuarioRepository.save(usuario);
+			attr.addFlashAttribute("msgSucesso", "Usuário cadastrado com sucesso!");
 		} catch (Exception e) {
 			modelo.addAttribute("msgErro", "ERRO INTERNO NO SERVIDOR");
 			return "usuario/cadastro";
@@ -62,6 +65,7 @@ public class CadastroUserController {
 	}
 
 	@GetMapping("/editar/{id}")
+	@Transactional(readOnly = true)
 	public String iniciarEdicao(@PathVariable("id") Integer idUser, ModelMap model) {
 
 		Usuario u = usuarioRepository.findById(idUser).get();

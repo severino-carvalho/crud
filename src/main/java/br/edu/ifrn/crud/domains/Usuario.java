@@ -17,31 +17,31 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
+	@Column(nullable = false) //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
 	@NotBlank(message = "Campo 'Nome' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	@Size(min = 3, message = "O campo 'Nome' deve conter ao menos 3 caracteres.") // Limita o limite mínimo de caracteres para
 																			// 3, ex: Ana - Valor mínimo
 	private String nome;
 
-	@Column //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
+	@Column(nullable = false) //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
 	@NotBlank(message = "Campo 'Email' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	private String email;
 
-	@Column //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
+	@Column(nullable = false) //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
 	@NotBlank(message = "Campo 'Telefone' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	@Size(min = 9, max = 9, message = "O campo 'Telefone' deve conter somente 9 dígitos.") // Obriga o campo ter um valor de 9 dígitos
 	private String telefone;
 
-	@Column //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
+	@Column(nullable = false) //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
 	@NotBlank(message = "Campo 'Senha' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	@Size(min = 6, max = 15, message = "A senha deve conter dentre 6 a 15 caractéres")
 	private String senha;
 
-	@Column //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
+	@Column(nullable = false) //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
 	@NotBlank(message = "Campo 'Sexo' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	private String sexo;
 
-	@Column //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
+	@Column(nullable = false) //	MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
 	@NotBlank(message = "Campo 'Profissao' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	private String profissao;
 
@@ -71,6 +71,10 @@ public class Usuario {
 
 	public int getId() {
 		return id;
+	}
+
+	public void setId(int id){
+		this.id = id;
 	}
 
 	public String getNome() {
