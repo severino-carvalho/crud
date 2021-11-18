@@ -9,6 +9,26 @@
 	<title>Cadastro de Usuáro</title>
 
 	<link rel="stylesheet" href="/style/arquivo.css" />
+
+	<! - jQuery Autocomplete ->
+		<link rel="stylesheet" href="// code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"> </script>
+
+		<script>
+			$(document).ready(() => {
+				$("#profissao").autocomplete({
+					source: "/usuarios/autocompleteprofissoes",
+					minLength: 3,
+					select: (event, ui) => {
+						this.value = ui.item.label;
+						$("#idProfissao").val(ui.item.label);
+						return false;
+					}
+				});
+			});
+		</script>
+
 </head>
 
 <body>
@@ -80,10 +100,8 @@
 			<tr>
 				<td>Profissão:</td>
 				<td>
-					<select th:field="${usuario.profissao}">
-						<option value="">Opções...</option>
-						<option th:each="p : ${profissoes}" th:text="${p}" th:value="${p}"></option>
-					</select>
+					<input type="text" id="profissao" th:field="${usuario.profissao.nome}" />
+					<input type="hidden" id="idProfissao" th:field="${usuario.profissao.id}" />
 				</td>
 			</tr>
 
