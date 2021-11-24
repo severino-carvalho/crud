@@ -18,11 +18,23 @@
 		<script>
 			$(document).ready(() => {
 				$("#profissao").autocomplete({
-					source: "/usuarios/autocompleteprofissoes",
+					source: "/usuarios/autocompleteProfissoes",
 					minLength: 3,
 					select: (event, ui) => {
 						this.value = ui.item.label;
 						$("#idProfissao").val(ui.item.label);
+						return false;
+					}
+				});
+			});
+
+			$(document).ready(() => {
+				$("#formacao").autocomplete({
+					source: "/usuarios/autocompleteFormacoes",
+					minLength: 1,
+					select: (event, ui) => {
+						this.value = ui.item.label;
+						$("#idFormacao").val(ui.item.label);
 						return false;
 					}
 				});
@@ -106,6 +118,16 @@
 			</tr>
 
 			<tr>
+				<td>Formação:</td>
+				<td>
+					<input type="text" id="formacao" th:field="${usuario.formacao.nome}" />
+					<input type="text" id="idFormacao" th:field="${usuario.formacao.id}" />
+
+					<input type="submit" value="Adicionar" formaction="/usuario/addCursoFormacao" formmethod="post" />
+				</td>
+			</tr>
+
+			<tr>
 				<td colspan="2" style="text-align: center;">
 					<input class="btn btn-conf" type="submit" th:value="${usuario.id} == 0 ? Cadastrar : Editar" />
 					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/" formmethod="GET" />
@@ -113,6 +135,29 @@
 				</td>
 			</tr>
 		</table>
+
+		<div th:if="${usuario.formacoes} != null and ${!usuario.formacoes.empty}">
+			<table>
+				<caption>Cursos de Formação</caption>
+				<tr>
+					<th>Nome</th>
+					<th>
+						<input type="submit" value="Remover"
+							th:formaction="${/usuarios/removerCursoFormacao/} + ${f.id}" formmethod="post" />
+					</th>
+				</tr>
+				<tr th:each="f : ${usuario.formacoes}">
+					<td th:text="${f.nome}"></td>
+				</tr>
+			</table>
+
+			<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
+				th:field="${usuario.formacoes[__${itemStat.index}__].id}">
+
+			<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
+				th:field="${usuario.formacoes[__${itemStat.index}__].nome}">
+
+		</div>
 	</form>
 
 </body>
