@@ -1,60 +1,109 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
 
-		* {
-			margin: 0px;
-			padding: 5px;
-			font-family: 'Ubuntu';
-		}
+:root {
+	--p-btn: 9px;
+}
 
-		body {
-			background-color: azure;
-		}
+* {
+	margin: 0px;
+	padding: 5px;
+	font-family: 'Ubuntu';
+	box-sizing: border-box;
+}
 
-		a {
-			text-decoration: none;
-			font-size: 14pt;
-			padding: 10px;
-		}
+body {
+	background-color: azure;
+}
 
-		a:hover {
-			color: black;
-		}
-		
-		.btn {
-			border: 2px solid transparent;
-			border-radius: 4px;
-			padding: 7px;
-			font-size: 11pt;
-			font-weight: bold;
-		}
-		
-		.btn:hover {
-			border: 2px solid black;
-			cursor: pointer;
-		}
-		
-		.btn-conf {
-			background-color: green;
-		}
-		
-		.btn-cancel {
-			background-color: red;
-		}
-		
-		.btn-reset {
-			background-color: darkorange;
-		}
-		
-		.table {
-			border: 1px solid slategray;
-			border-collapse: collapse
-		}
-		
-		.tr {
-			border: 1px solid slategray	;
-			}
-		
-		.td {
-			border: 1px solid slategray	;
-			text-align: center;
-		}
+a {
+	text-decoration: none;
+	font-size: 14pt;
+	padding: 10px;
+}
+
+a:hover {
+	color: black;
+}
+
+.btn {
+	border: 2px solid transparent;
+	border: 0px;
+	border-radius: 4px;
+	padding: 7px;
+	font-size: 11pt;
+	font-weight: bold;
+	background-color: transparent;
+}
+
+.btn.material-icons:hover {
+	color: red;
+	transition: all .4s ease-in-out;
+	border: 0px;
+}
+
+.btn.material-icons:hover {
+	padding: var(--p-btn);
+	margin: 0px;
+	border: 0px;
+}
+
+.btn:hover {
+	border: 1px solid salmon;
+	padding: calc(var(--p-btn) - 1px);
+	cursor: pointer;
+}
+
+.btn-conf {
+	background-color: green;
+	padding: var(--p-btn);
+}
+
+.btn-cancel {
+	background-color: red;
+	padding: var(--p-btn);
+}
+
+.btn-reset {
+	background-color: darkorange;
+	padding: var(--p-btn);
+}
+
+.table {
+	border: 1px solid slategray;
+	border-collapse: collapse
+}
+
+.tr {
+	border: 1px solid slategray;
+}
+
+.td {
+	border: 1px solid slategray;
+	text-align: center;
+}
+
+.d-flex {
+	display: flex;
+	justify-content: center;
+	gap: 25px;
+}
+
+.form {
+	padding: 1rem;
+	box-shadow: 0 0 1em rgba(0, 0, 0, 0.692);
+	border-radius: 7px;
+	min-width: 40%;
+}
+
+.item-center {
+	display: flex;
+	align-self: center;
+	padding: 1rem;
+	box-shadow: 0 0 1em rgba(0, 0, 0, 0.692);
+	border-radius: 7px;
+}
+
+.item-center>table, .item-center tr, .item-center th, .item-center td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
