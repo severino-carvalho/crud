@@ -1,0 +1,13 @@
+
+<div th:if="${msgSucesso} != false">
+    <b th:text="${msgSucesso}" style="color: green;"></b>
+    <br />
+</div>
+
+<div th:if="${#fields.hasAnyErrors()}">
+    <ul>
+        <li th:each="e : ${#fields.detailedErrors()}">
+            <b th:text="${e.message}" style="color: red;"></b>
+        </li>
+    </ul>
+</div>
