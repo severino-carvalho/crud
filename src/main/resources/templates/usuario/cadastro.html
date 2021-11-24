@@ -46,29 +46,10 @@
 	<section class="layout-content" layout:fragment="corpo">
 		<h1 style="text-align: center;">Cadastro de usuário</h1>
 
-		<div th:if="${msgSucesso} != false">
-			<b th:text="${msgSucesso}" style="color: green;"></b>
-			<br />
+		<div th:replace="/module/mensagens">
 		</div>
 
-
 		<form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
-
-			<div th:if="${#fields.hasAnyErrors()}">
-				<ul>
-					<li th:each="e : ${#fields.detailedErrors()}">
-						<b th:text="${e.message}" style="color: red;"></b>
-					</li>
-				</ul>
-			</div>
-
-			<div th:if="${msgErro} != null">
-				<ul>
-					<li th:each="e : ${msgErro}">
-						<b th:text="${e}" style="color: red;"></b>
-					</li>
-				</ul>
-			</div>
 
 			<input type="hidden" th:field="${usuario.id}" />
 
