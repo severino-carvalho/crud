@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifrn.crud.domains.CursoFormacao;
 import br.edu.ifrn.crud.domains.Profissao;
 import br.edu.ifrn.crud.domains.Usuario;
 import br.edu.ifrn.crud.dto.AutocompleteDTO;
+import br.edu.ifrn.crud.repository.CursoFormacaoRepository;
 import br.edu.ifrn.crud.repository.ProfissaoRepository;
 import br.edu.ifrn.crud.repository.UsuarioRepository;
 
@@ -33,6 +35,9 @@ public class CadastroUserController {
 
 	@Autowired
 	private ProfissaoRepository profissaoRepository;
+
+	@Autowired
+	private CursoFormacaoRepository formacaoRepository;
 
 	@GetMapping("/cadastro")
 	public String entrarCadastro(ModelMap modelUser) {
@@ -93,5 +98,29 @@ public class CadastroUserController {
 		profissoes.forEach(p -> resultados.add(new AutocompleteDTO(p.getNome(), p.getId())));
 
 		return resultados;
+	}
+
+	@GetMapping("/autocompleteFormacoes")
+	@Transactional(readOnly = true)
+	@ResponseBody
+	public List<AutocompleteDTO> autocompleteFormacoes(@RequestParam("term") String termo) {
+		List<CursoFormacao> formacoes = formacaoRepository.findByNome(termo);
+
+		List<AutocompleteDTO> resultados = new ArrayList<>();
+
+		formacoes.forEach(f -> resultados.add(new AutocompleteDTO(f.getNome(), f.getId())));
+
+		return resultados;
+	}
+
+	@PostMapping("/addCursoFormacao")
+	public String addCursoFormacao(Usuario usuario, ModelMap modelo) {
+		if (usuario.getFormacoes() == null) {
+			usuario.setFormacoes(new ArrayList<>());
+		}
+
+		usuario.getFormacoes().add(usuario.getFormacao());
+		
+		return "/usuario/cadastro";
 	}
 }
