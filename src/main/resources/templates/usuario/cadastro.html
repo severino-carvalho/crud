@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:fragment="~{/layout/layout}">
 
 <head>
 	<meta charset="UTF-8" />
@@ -10,155 +9,158 @@
 
 	<link rel="stylesheet" href="/style/arquivo.css" />
 
-	<! - jQuery Autocomplete ->
-		<link rel="stylesheet" href="// code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-		<script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"> </script>
+	<!-- jQuery Autocomplete -->
+	<link rel="stylesheet" href="// code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"> </script>
 
-		<script>
-			$(document).ready(() => {
-				$("#profissao").autocomplete({
-					source: "/usuarios/autocompleteProfissoes",
-					minLength: 3,
-					select: (event, ui) => {
-						this.value = ui.item.label;
-						$("#idProfissao").val(ui.item.label);
-						return false;
-					}
-				});
+	<script>
+		$(document).ready(() => {
+			$("#profissao").autocomplete({
+				source: "/usuarios/autocompleteProfissoes",
+				minLength: 3,
+				select: (event, ui) => {
+					this.value = ui.item.label;
+					$("#idProfissao").val(ui.item.label);
+					return false;
+				}
 			});
+		});
 
-			$(document).ready(() => {
-				$("#formacao").autocomplete({
-					source: "/usuarios/autocompleteFormacoes",
-					minLength: 1,
-					select: (event, ui) => {
-						this.value = ui.item.label;
-						$("#idFormacao").val(ui.item.label);
-						return false;
-					}
-				});
+		$(document).ready(() => {
+			$("#formacao").autocomplete({
+				source: "/usuarios/autocompleteFormacoes",
+				minLength: 1,
+				select: (event, ui) => {
+					this.value = ui.item.label;
+					$("#idFormacao").val(ui.item.label);
+					return false;
+				}
 			});
-		</script>
-
+		});
+	</script>
 </head>
 
 <body>
-	<h1 style="text-align: center;">Cadastro de usuário</h1>
 
-	<div th:if="${msgSucesso} != false">
-		<b th:text="${msgSucesso}" style="color: green;"></b>
-		<br />
-	</div>
+	<section class="layout-content" layout:fragment="corpo">
+		<h1 style="text-align: center;">Cadastro de usuário</h1>
 
-
-	<form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
-
-		<div th:if="${#fields.hasAnyErrors()}">
-			<ul>
-				<li th:each="e : ${#fields.detailedErrors()}">
-					<b th:text="${e.message}" style="color: red;"></b>
-				</li>
-			</ul>
+		<div th:if="${msgSucesso} != false">
+			<b th:text="${msgSucesso}" style="color: green;"></b>
+			<br />
 		</div>
 
-		<div th:if="${msgErro} != null">
-			<ul>
-				<li th:each="e : ${msgErro}">
-					<b th:text="${e}" style="color: red;"></b>
-				</li>
-			</ul>
-		</div>
 
-		<input type="hidden" th:field="${usuario.id}" />
+		<form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
 
-		<table>
-			<tr>
-				<td>Nome:</td>
-				<td>
-					<input type="text" th:field="${usuario.nome}" />
-				</td>
-			</tr>
+			<div th:if="${#fields.hasAnyErrors()}">
+				<ul>
+					<li th:each="e : ${#fields.detailedErrors()}">
+						<b th:text="${e.message}" style="color: red;"></b>
+					</li>
+				</ul>
+			</div>
 
-			<tr>
-				<td>Email:</td>
-				<td>
-					<input type="email" th:field="${usuario.email}" />
-				</td>
-			</tr>
+			<div th:if="${msgErro} != null">
+				<ul>
+					<li th:each="e : ${msgErro}">
+						<b th:text="${e}" style="color: red;"></b>
+					</li>
+				</ul>
+			</div>
 
-			<tr>
-				<td>Telefone:</td>
-				<td>
-					<input type="tel" th:field="${usuario.telefone}" />
-				</td>
-			</tr>
+			<input type="hidden" th:field="${usuario.id}" />
 
-			<tr>
-				<td>Senha:</td>
-				<td>
-					<input type="password" th:field="${usuario.senha}" />
-				</td>
-			</tr>
-
-			<tr>
-				<td>Sexo:</td>
-				<td>
-					<input type="radio" th:field="${usuario.sexo}" th:value="M" /> Masculino
-					<input type="radio" th:field="${usuario.sexo}" th:value="F" /> Feminino
-				</td>
-			</tr>
-
-			<tr>
-				<td>Profissão:</td>
-				<td>
-					<input type="text" id="profissao" th:field="${usuario.profissao.nome}" />
-					<input type="hidden" id="idProfissao" th:field="${usuario.profissao.id}" />
-				</td>
-			</tr>
-
-			<tr>
-				<td>Formação:</td>
-				<td>
-					<input type="text" id="formacao" th:field="${usuario.formacao.nome}" />
-					<input type="text" id="idFormacao" th:field="${usuario.formacao.id}" />
-
-					<input type="submit" value="Adicionar" formaction="/usuario/addCursoFormacao" formmethod="post" />
-				</td>
-			</tr>
-
-			<tr>
-				<td colspan="2" style="text-align: center;">
-					<input class="btn btn-conf" type="submit" th:value="${usuario.id} == 0 ? Cadastrar : Editar" />
-					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/" formmethod="GET" />
-					<input class="btn btn-reset" type="reset" value="Limpar" />
-				</td>
-			</tr>
-		</table>
-
-		<div th:if="${usuario.formacoes} != null and ${!usuario.formacoes.empty}">
 			<table>
-				<caption>Cursos de Formação</caption>
 				<tr>
-					<th>Nome</th>
-					<th>
-						<input type="submit" value="Remover"
-							th:formaction="${/usuarios/removerCursoFormacao/} + ${f.id}" formmethod="post" />
-					</th>
+					<td>Nome:</td>
+					<td>
+						<input type="text" th:field="${usuario.nome}" />
+					</td>
 				</tr>
-				<tr th:each="f : ${usuario.formacoes}">
-					<td th:text="${f.nome}"></td>
+
+				<tr>
+					<td>Email:</td>
+					<td>
+						<input type="email" th:field="${usuario.email}" />
+					</td>
+				</tr>
+
+				<tr>
+					<td>Telefone:</td>
+					<td>
+						<input type="tel" th:field="${usuario.telefone}" />
+					</td>
+				</tr>
+
+				<tr>
+					<td>Senha:</td>
+					<td>
+						<input type="password" th:field="${usuario.senha}" />
+					</td>
+				</tr>
+
+				<tr>
+					<td>Sexo:</td>
+					<td>
+						<input type="radio" th:field="${usuario.sexo}" th:value="M" /> Masculino
+						<input type="radio" th:field="${usuario.sexo}" th:value="F" /> Feminino
+					</td>
+				</tr>
+
+				<tr>
+					<td>Profissão:</td>
+					<td>
+						<input type="text" id="profissao" th:field="${usuario.profissao.nome}" />
+						<input type="hidden" id="idProfissao" th:field="${usuario.profissao.id}" />
+					</td>
+				</tr>
+
+				<tr>
+					<td>Formação:</td>
+					<td>
+						<input type="text" id="formacao" th:field="${usuario.formacao.nome}" />
+						<input type="text" id="idFormacao" th:field="${usuario.formacao.id}" />
+
+						<input type="submit" value="Adicionar" formaction="/usuario/addCursoFormacao"
+							formmethod="post" />
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input class="btn btn-conf" type="submit" th:value="${usuario.id} == 0 ? Cadastrar : Editar" />
+						<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/" formmethod="GET" />
+						<input class="btn btn-reset" type="reset" value="Limpar" />
+					</td>
 				</tr>
 			</table>
 
-			<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
-				th:field="${usuario.formacoes[__${itemStat.index}__].id}">
+			<div th:if="${usuario.formacoes} != null and ${!usuario.formacoes.empty}">
+				<table>
+					<caption>Cursos de Formação</caption>
+					<tr>
+						<th>Nome</th>
+						<th>
+							<input type="submit" value="Remover"
+								th:formaction="${/usuarios/removerCursoFormacao/} + ${f.id}" formmethod="post" />
+						</th>
+					</tr>
+					<tr th:each="f : ${usuario.formacoes}">
+						<td th:text="${f.nome}"></td>
+					</tr>
+				</table>
 
-			<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
-				th:field="${usuario.formacoes[__${itemStat.index}__].nome}">
+				<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
+					th:field="${usuario.formacoes[__${itemStat.index}__].id}">
 
-		</div>
-	</form>
+				<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
+					th:field="${usuario.formacoes[__${itemStat.index}__].nome}">
+
+			</div>
+		</form>
+	</section>
 
 </body>
 
