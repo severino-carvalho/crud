@@ -120,7 +120,18 @@ public class CadastroUserController {
 		}
 
 		usuario.getFormacoes().add(usuario.getFormacao());
-		
+
+		return "/usuario/cadastro";
+	}
+
+	@PostMapping("/removerCursoFormacao/{id}")
+	public String removerCursoFormacao(Usuario usuario, @PathVariable("id") Integer idFormacao, ModelMap modelo) {
+
+		CursoFormacao curso = new CursoFormacao();
+		curso.setId(idFormacao);
+
+		usuario.getFormacoes().remove(curso);
+
 		return "/usuario/cadastro";
 	}
 }
