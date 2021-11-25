@@ -124,6 +124,8 @@ public class CadastroUserController {
 			usuario.setFormacoes(new ArrayList<>());
 		}
 
+		modelo.addAttribute("msgSucesso", usuario.getFormacao().getNome() + " adicionado as formações!");
+
 		usuario.getFormacoes().add(usuario.getFormacao());
 
 		return "/usuario/cadastro";
@@ -134,6 +136,9 @@ public class CadastroUserController {
 
 		CursoFormacao curso = new CursoFormacao();
 		curso.setId(idFormacao);
+
+		modelo.addAttribute("msgSucesso", usuario.getFormacoes().get(usuario.getFormacoes().indexOf(curso)).getNome()
+				+ " removido das formações");
 
 		usuario.getFormacoes().remove(curso);
 
