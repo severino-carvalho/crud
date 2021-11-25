@@ -1,6 +1,5 @@
 package br.edu.ifrn.crud.domains;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,9 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 import javax.validation.constraints.*;
 
 @Entity
@@ -48,14 +45,7 @@ public class Usuario {
 	private String sexo;
 
 	@ManyToOne(optional = false) // MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
-	@NotBlank(message = "Campo 'Profissao' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	private Profissao profissao;
-
-	@ManyToMany
-	private List<CursoFormacao> formacoes;
-
-	@Transient
-	private CursoFormacao formacao;
 
 	// Equals and HashCode
 	@Override
@@ -137,23 +127,5 @@ public class Usuario {
 	public void setProfissao(Profissao profissao) {
 		this.profissao = profissao;
 	}
-
-	public List<CursoFormacao> getFormacoes() {
-		return formacoes;
-	}
-
-	public void setFormacoes(List<CursoFormacao> formacoes) {
-		this.formacoes = formacoes;
-	}
-
-	public CursoFormacao getFormacao() {
-		return formacao;
-	}
-
-	public void setFormacao(CursoFormacao formacao) {
-		this.formacao = formacao;
-	}
-
-	
 
 }

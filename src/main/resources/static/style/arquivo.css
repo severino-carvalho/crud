@@ -93,6 +93,7 @@ a:hover {
 	box-shadow: 0 0 1em rgba(0, 0, 0, 0.692);
 	border-radius: 7px;
 	min-width: 40%;
+	margin: 0 auto;
 }
 
 .item-center {

@@ -9,8 +9,6 @@
 
 	<link rel="stylesheet" href="/style/arquivo.css" />
 
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 	<!-- jQuery Autocomplete -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
@@ -28,18 +26,6 @@
 				}
 			});
 		});
-
-		$(document).ready(() => {
-			$("#formacao").autocomplete({
-				source: "/usuarios/autocompleteFormacoes",
-				minLength: 1,
-				select: function (event, ui) {
-					this.value = ui.item.label;
-					$("#idFormacao").val(ui.item.value);
-					return false;
-				}
-			});
-		});
 	</script>
 </head>
 
@@ -50,107 +36,72 @@
 
 
 		<form class="d-flex" th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
+			<div>
 
-			<div th:replace="/module/mensagens">
-			</div>
+				<div th:replace="/module/mensagens">
+				</div>
 
-			<input type="hidden" th:field="${usuario.id}" />
+				<input type="hidden" th:field="${usuario.id}" />
 
-			<div class="form">
+				<div class="form">
 
-				<table>
-					<tr>
-						<td>Nome:</td>
-						<td>
-							<input type="text" th:field="${usuario.nome}" />
-						</td>
-					</tr>
+					<table>
+						<tr>
+							<td>Nome:</td>
+							<td>
+								<input type="text" th:field="${usuario.nome}" />
+							</td>
+						</tr>
 
-					<tr>
-						<td>Email:</td>
-						<td>
-							<input type="email" th:field="${usuario.email}" />
-						</td>
-					</tr>
+						<tr>
+							<td>Email:</td>
+							<td>
+								<input type="email" th:field="${usuario.email}" />
+							</td>
+						</tr>
 
-					<tr>
-						<td>Telefone:</td>
-						<td>
-							<input type="tel" th:field="${usuario.telefone}" />
-						</td>
-					</tr>
+						<tr>
+							<td>Telefone:</td>
+							<td>
+								<input type="tel" th:field="${usuario.telefone}" />
+							</td>
+						</tr>
 
-					<tr>
-						<td>Senha:</td>
-						<td>
-							<input type="password" th:field="${usuario.senha}" />
-						</td>
-					</tr>
+						<tr>
+							<td>Senha:</td>
+							<td>
+								<input type="password" th:field="${usuario.senha}" />
+							</td>
+						</tr>
 
-					<tr>
-						<td>Sexo:</td>
-						<td>
-							<input type="radio" th:field="${usuario.sexo}" th:value="M" /> Masculino
-							<input type="radio" th:field="${usuario.sexo}" th:value="F" /> Feminino
-						</td>
-					</tr>
+						<tr>
+							<td>Sexo:</td>
+							<td>
+								<input type="radio" th:field="${usuario.sexo}" th:value="M" /> Masculino
+								<input type="radio" th:field="${usuario.sexo}" th:value="F" /> Feminino
+							</td>
+						</tr>
 
-					<tr>
-						<td>Profissão:</td>
-						<td>
-							<input type="text" id="profissao" th:field="${usuario.profissao.nome}" />
-							<input type="hidden" id="idProfissao" th:field="${usuario.profissao.id}" />
-						</td>
-					</tr>
+						<tr>
+							<td>Profissão:</td>
+							<td>
+								<input type="text" id="profissao" th:field="${usuario.profissao.nome}" />
+								<input type="hidden" id="idProfissao" th:field="${usuario.profissao.id}" />
+							</td>
+						</tr>
 
-					<tr>
-						<td>Formação:</td>
-						<td>
-							<input type="text" id="formacao" th:field="${usuario.formacao.nome}" />
-							<input type="hidden" id="idFormacao" th:field="${usuario.formacao.id}" />
+						<tr>
+							<td colspan="2" style="text-align: center;">
+								<input class="btn btn-conf" type="submit"
+									th:value="${usuario.id} == 0 ? Cadastrar : Editar" />
+								<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/"
+									formmethod="GET" />
+								<input class="btn btn-reset" type="reset" value="Limpar" />
+							</td>
+						</tr>
+					</table>
 
-							<input class="btn btn-conf" type="submit" formaction="/usuarios/addCursoFormacao"
-								formmethod="post" value="Adicionar" />
-						</td>
-					</tr>
-
-					<tr>
-						<td colspan="2" style="text-align: center;">
-							<input class="btn btn-conf" type="submit"
-								th:value="${usuario.id} == 0 ? Cadastrar : Editar" />
-							<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/"
-								formmethod="GET" />
-							<input class="btn btn-reset" type="reset" value="Limpar" />
-						</td>
-					</tr>
-				</table>
-
-			</div>
-
-			<div class="item-center" th:if="${usuario.formacoes} != null and ${!usuario.formacoes.empty}">
-				<table>
-					<caption>Cursos de Formação</caption>
-					<tr>
-						<th>Nome</th>
-						<th>Ação</th>
-					</tr>
-					<tr th:each="f : ${usuario.formacoes}">
-						<td th:text="${f.nome}"></td>
-						<td>
-
-							<button class="btn material-icons" type="submit"
-								th:formaction="@{/usuarios/removerCursoFormacao/} + ${f.id}" formmethod="post">
-								delete
-							</button>
-						</td>
-					</tr>
-				</table>
-
-				<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
-					th:field="${usuario.formacoes[__${itemStat.index}__].id}">
-
-				<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
-					th:field="${usuario.formacoes[__${itemStat.index}__].nome}">
+				</div>
 
 			</div>
 		</form>

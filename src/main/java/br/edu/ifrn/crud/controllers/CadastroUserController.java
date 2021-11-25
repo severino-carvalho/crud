@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.edu.ifrn.crud.domains.CursoFormacao;
 import br.edu.ifrn.crud.domains.Profissao;
 import br.edu.ifrn.crud.domains.Usuario;
 import br.edu.ifrn.crud.dto.AutocompleteDTO;
-import br.edu.ifrn.crud.repository.CursoFormacaoRepository;
 import br.edu.ifrn.crud.repository.ProfissaoRepository;
 import br.edu.ifrn.crud.repository.UsuarioRepository;
 
@@ -35,9 +34,6 @@ public class CadastroUserController {
 
 	@Autowired
 	private ProfissaoRepository profissaoRepository;
-
-	@Autowired
-	private CursoFormacaoRepository formacaoRepository;
 
 	@GetMapping("/cadastro")
 	public String entrarCadastro(ModelMap modelUser) {
@@ -53,6 +49,11 @@ public class CadastroUserController {
 	@PostMapping("/salvar")
 	@Transactional(readOnly = false)
 	public String salvarUser(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap modelo) {
+
+		// Verifica se ele selecionou uma profissão válida
+		if (usuario.getProfissao().getId() == 0) {
+			result.addError(new ObjectError("ProfissaoNUll", "Profissão válida não informada!"));
+		}
 
 		// Se houver erros no objeto usuário preenchido ele vai ser capturado no IF e
 		// não vai ser realizado o cadastro
@@ -98,40 +99,5 @@ public class CadastroUserController {
 		profissoes.forEach(p -> resultados.add(new AutocompleteDTO(p.getNome(), p.getId())));
 
 		return resultados;
-	}
-
-	@GetMapping("/autocompleteFormacoes")
-	@Transactional(readOnly = true)
-	@ResponseBody
-	public List<AutocompleteDTO> autocompleteFormacoes(@RequestParam("term") String termo) {
-		List<CursoFormacao> formacoes = formacaoRepository.findByNome(termo);
-
-		List<AutocompleteDTO> resultados = new ArrayList<>();
-
-		formacoes.forEach(f -> resultados.add(new AutocompleteDTO(f.getNome(), f.getId())));
-
-		return resultados;
-	}
-
-	@PostMapping("/addCursoFormacao")
-	public String addCursoFormacao(Usuario usuario, ModelMap modelo) {
-		if (usuario.getFormacoes() == null) {
-			usuario.setFormacoes(new ArrayList<>());
-		}
-
-		usuario.getFormacoes().add(usuario.getFormacao());
-
-		return "/usuario/cadastro";
-	}
-
-	@PostMapping("/removerCursoFormacao/{id}")
-	public String removerCursoFormacao(Usuario usuario, @PathVariable("id") Integer idFormacao, ModelMap modelo) {
-
-		CursoFormacao curso = new CursoFormacao();
-		curso.setId(idFormacao);
-
-		usuario.getFormacoes().remove(curso);
-
-		return "/usuario/cadastro";
 	}
 }
