@@ -48,7 +48,6 @@ public class Usuario {
 	private String sexo;
 
 	@ManyToOne(optional = false) // MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
-	@NotBlank(message = "Campo 'Profissao' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
 	private Profissao profissao;
 
 	@ManyToMany
