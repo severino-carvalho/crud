@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,10 @@ public class CadastroUserController {
 	@PostMapping("/salvar")
 	@Transactional(readOnly = false)
 	public String salvarUser(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap modelo) {
+
+		if (usuario.getProfissao().getId() == 0) {
+			result.addError(new ObjectError("ProfissaoNUll", "Profissão não informada!"));
+		}
 
 		// Se houver erros no objeto usuário preenchido ele vai ser capturado no IF e
 		// não vai ser realizado o cadastro
