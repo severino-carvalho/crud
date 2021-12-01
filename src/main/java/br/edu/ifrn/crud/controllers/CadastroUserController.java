@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifrn.crud.domains.Arquivo;
 import br.edu.ifrn.crud.domains.CursoFormacao;
 import br.edu.ifrn.crud.domains.Profissao;
 import br.edu.ifrn.crud.domains.Usuario;
 import br.edu.ifrn.crud.dto.AutocompleteDTO;
+import br.edu.ifrn.crud.repository.ArquivoRepository;
 import br.edu.ifrn.crud.repository.CursoFormacaoRepository;
 import br.edu.ifrn.crud.repository.ProfissaoRepository;
 import br.edu.ifrn.crud.repository.UsuarioRepository;
@@ -40,6 +44,9 @@ public class CadastroUserController {
 	@Autowired
 	private CursoFormacaoRepository formacaoRepository;
 
+	@Autowired
+	private ArquivoRepository arquivoRepository;
+
 	@GetMapping("/cadastro")
 	public String entrarCadastro(ModelMap modelUser) {
 		modelUser.addAttribute("usuario", new Usuario());
@@ -53,11 +60,8 @@ public class CadastroUserController {
 
 	@PostMapping("/salvar")
 	@Transactional(readOnly = false)
-	public String salvarUser(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr, ModelMap modelo) {
-
-		if (usuario.getProfissao().getId() == 0) {
-			result.addError(new ObjectError("ProfissaoNUll", "Profissão não informada!"));
-		}
+	public String salvarUser(@Valid Usuario usuario, BindingResult result, @RequestParam("file") MultipartFile file,
+			RedirectAttributes attr, ModelMap modelo) {
 
 		// Se houver erros no objeto usuário preenchido ele vai ser capturado no IF e
 		// não vai ser realizado o cadastro
@@ -66,11 +70,25 @@ public class CadastroUserController {
 			return "/usuario/cadastro";
 		}
 
-		/**
-		 * IMPLEMENTAÇÃO DO CADASTRO DE USUÁRIOS NO BANCO DE DADOS
-		 */
-
 		try {
+			if (file != null && !file.isEmpty()) {
+				String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
+				Arquivo fileInsert = new Arquivo(nomeArquivo, file.getContentType(), file.getBytes());
+				arquivoRepository.save(fileInsert);
+
+				if (usuario.getFoto() != null && usuario.getFoto().getId() != null && usuario.getFoto().getId() > 0) {
+					arquivoRepository.delete(usuario.getFoto());
+				}
+
+				usuario.setFoto(fileInsert);
+			} else {
+				usuario.setFoto(null);
+			}
+
+			if (usuario.getProfissao().getId() == 0) {
+				result.addError(new ObjectError("ProfissaoNUll", "Profissão não informada!"));
+			}
+
 			usuarioRepository.save(usuario);
 			attr.addFlashAttribute("msgSucesso", "Usuário cadastrado com sucesso!");
 		} catch (Exception e) {
