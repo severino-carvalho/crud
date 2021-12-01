@@ -58,6 +58,7 @@
 	<div th:if="${not #lists.isEmpty(usuariosEncontrados)}">
 		<table class="table">
 			<tr class="tr">
+				<td class="td">Foto:</td>
 				<th class="td">Nome:</th>
 				<th class="td">Email:</th>
 				<th class="td" th:if="${mostrarTodosDados == true}">Telefone</th>
@@ -66,6 +67,10 @@
 				<th class="td">Opções</th>
 			</tr>
 			<tr class="tr" th:each="u : ${usuariosEncontrados}">
+				<td class="td">
+					<img th:if="${u.foto != null}" th:src="@{/download/} + ${u.foto.id} + '?salvar=false'"
+						alt="img_user" style="max-height: 128px;" />
+				</td>
 				<td class="td" th:text="${u.nome}"></td>
 				<td class="td" th:text="${u.email}"></td>
 				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.telefone}"></td>

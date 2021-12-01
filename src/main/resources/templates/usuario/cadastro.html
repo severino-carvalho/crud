@@ -49,7 +49,8 @@
 		<h1 style="text-align: center;">Cadastro de usuário</h1>
 
 
-		<form class="d-flex" th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST">
+		<form class="d-flex" th:action="@{/usuarios/salvar}" th:object="${usuario}" method="POST"
+			enctype="multipart/form-data">
 
 			<div th:replace="/module/mensagens">
 			</div>
@@ -111,6 +112,14 @@
 
 							<input class="btn btn-conf" type="submit" formaction="/usuarios/addCursoFormacao"
 								formmethod="post" value="Adicionar" />
+						</td>
+					</tr>
+
+					<tr>
+						<td>Foto:</td>
+						<td>
+							<input type="file" th:name="file" />
+							<input type="hidden" th:field="${usuario.foto.id}" />
 						</td>
 					</tr>
 
