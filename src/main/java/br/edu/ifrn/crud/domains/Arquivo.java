@@ -23,6 +23,10 @@ public class Arquivo {
     @Basic(fetch = FetchType.LAZY)
     private byte[] dados;
 
+    public Arquivo() {
+
+    }
+
     public Arquivo(String nomeArquivo, String tipoArquivo, byte[] dados) {
         super();
         this.nomeArquivo = nomeArquivo;
