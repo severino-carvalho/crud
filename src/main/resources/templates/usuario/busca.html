@@ -8,6 +8,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<title>Busca de Usuáro</title>
 
+
+	<!--	Google Material Icon CDN-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
 	<link rel="stylesheet" href="/style/arquivo.css" />
 </head>
 
@@ -65,11 +70,14 @@
 				<th class="td" th:if="${mostrarTodosDados == true}">Sexo</th>
 				<th class="td" th:if="${mostrarTodosDados == true}">Profissão</th>
 				<th class="td">Opções</th>
+				<th class="td">Download</th>
 			</tr>
 			<tr class="tr" th:each="u : ${usuariosEncontrados}">
 				<td class="td">
 					<img th:if="${u.foto != null}" th:src="@{/download/} + ${u.foto.id} + '?salvar=false'"
 						alt="img_user" style="max-height: 128px;" />
+
+
 				</td>
 				<td class="td" th:text="${u.nome}"></td>
 				<td class="td" th:text="${u.email}"></td>
@@ -84,6 +92,16 @@
 						onclick="if(!confirm('Você deseja realemnte remover o usuário?')) return false">
 						Remover
 					</a>
+				</td>
+				<td>
+					<form th:if="${u.foto != null}" th:action="@{/download/} + ${u.foto.id} + '?salvar=true'"
+						method="get">
+						<button type="submit">
+							<span class="material-icons">
+								download
+							</span>
+						</button>
+					</form>
 				</td>
 			</tr>
 		</table>
