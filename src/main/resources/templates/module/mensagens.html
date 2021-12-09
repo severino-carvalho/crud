@@ -3,6 +3,14 @@
     <br />
 </div>
 
+<div th:if="${msgErro != false}">
+    <ul>
+        <li th:each="e : ${msgErro}">
+            <b th:text="${e}" style="color: red;"></b>
+        </li>
+    </ul>
+</div>
+
 <div th:if="${#fields.hasAnyErrors()}">
     <ul>
         <li th:each="e : ${#fields.detailedErrors()}">

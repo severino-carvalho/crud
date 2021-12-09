@@ -8,6 +8,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<title>Busca de Usuáro</title>
 
+	<style>
+		.btn-down {
+			cursor: pointer;
+		}
+	</style>
 
 	<!--	Google Material Icon CDN-->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -74,9 +79,10 @@
 			</tr>
 			<tr class="tr" th:each="u : ${usuariosEncontrados}">
 				<td class="td">
-					<img th:if="${u.foto != null}" th:src="@{/download/} + ${u.foto.id} + '?salvar=false'"
-						alt="img_user" style="max-height: 128px;" />
 
+					<div th:if="${u.arquivos != null}" th:each="a : ${u.arquivos}" style="display: flex; ">
+						<img th:src="@{/download/} + ${a.id} + '?salvar=false'" alt="" width="75px" height="55px" />
+					</div>
 
 				</td>
 				<td class="td" th:text="${u.nome}"></td>
@@ -94,14 +100,15 @@
 					</a>
 				</td>
 				<td>
-					<form th:if="${u.foto != null}" th:action="@{/download/} + ${u.foto.id} + '?salvar=true'"
-						method="get">
-						<button type="submit">
-							<span class="material-icons">
-								download
-							</span>
-						</button>
-					</form>
+					<div th:if="${u.arquivos != null}" th:each="a : ${u.arquivos}">
+						<form th:if="${a != null}" th:action="@{/download/} + ${a.id} + '?salvar=true'" method="get">
+							<button type="submit" class="btn-down">
+								<span class="material-icons">
+									download
+								</span>
+							</button>
+						</form>
+					</div>
 				</td>
 			</tr>
 		</table>

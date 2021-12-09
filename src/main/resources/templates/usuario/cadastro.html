@@ -117,10 +117,12 @@
 					</tr>
 
 					<tr>
-						<td>Foto:</td>
+						<td>Anexo:</td>
 						<td>
 							<input type="file" th:name="file" />
-							<input type="hidden" th:field="${usuario.foto.id}" />
+							<input type="hidden" th:field="${usuario.arquivo.id}" />
+
+							<input type="submit" formaction="/usuarios/addAnexo" formmethod="post" value="Adicionar">
 						</td>
 					</tr>
 
@@ -161,6 +163,32 @@
 
 				<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
 					th:field="${usuario.formacoes[__${itemStat.index}__].nome}">
+
+			</div>
+			<div class="item-center" th:if="${usuario.arquivos} != null and ${!usuario.arquivos.empty}">
+
+				<table>
+					<caption>Anexos</caption>
+					<tr>
+						<th>Nome</th>
+						<th>Ação</th>
+					</tr>
+					<tr th:each="a : ${usuario.arquivos}">
+						<td th:text="${a.nomeArquivo}"></td>
+						<td>
+							<button class="btn material-icons" type="submit"
+								th:formaction="@{/usuarios/removerAnexo/} + ${a.id}" formmethod="post">
+								delete
+							</button>
+						</td>
+					</tr>
+				</table>
+
+				<input type="hidden" th:each="a, itemStat : ${usuario.arquivos}"
+					th:field="${usuario.arquivos[__${itemStat.index}__].id}">
+
+				<input type="hidden" th:each="a, itemStat : ${usuario.arquivos}"
+					th:field="${usuario.arquivos[__${itemStat.index}__].nomeArquivo}">
 
 			</div>
 		</form>
