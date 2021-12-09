@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.*;
 
@@ -59,8 +58,11 @@ public class Usuario {
 	@Transient
 	private CursoFormacao formacao;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-	private Arquivo foto;
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<Arquivo> arquivos;
+
+	@Transient
+	private Arquivo arquivo;
 
 	// Equals and HashCode
 	@Override
@@ -159,12 +161,20 @@ public class Usuario {
 		this.formacao = formacao;
 	}
 
-	public Arquivo getFoto() {
-		return foto;
+	public List<Arquivo> getArquivos() {
+		return arquivos;
 	}
 
-	public void setFoto(Arquivo foto) {
-		this.foto = foto;
+	public void setArquivos(List<Arquivo> arquivos) {
+		this.arquivos = arquivos;
+	}
+
+	public Arquivo getArquivo() {
+		return arquivo;
+	}
+
+	public void setArquivo(Arquivo arquivo) {
+		this.arquivo = arquivo;
 	}
 
 }
