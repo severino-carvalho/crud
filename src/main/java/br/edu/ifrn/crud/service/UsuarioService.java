@@ -1,4 +1,4 @@
-package br.edu.ifrn.crud.Service;
+package br.edu.ifrn.crud.service;
 
 import java.util.ArrayList;
 
