@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html layout:fragment="~{/layout/layout}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/style/arquivo.css" />
+
+    <!--	Google Material Icon CDN-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <section class="layout-content" layout:fragment="corpo">
+
+        <form th:action="@{/login}" method="post">
+            <div th:if="${msgErro} != null">
+                <b th:text="${msgErro}"></b>
+            </div>
+
+            <div>
+
+                <label for="username">Email</label>
+
+                <input type="text" id="username" name="username" required autofocus />
+
+            </div>
+
+
+            <div>
+
+                <label for="password">Senha</label>
+
+                <input type="password" id="password" name="password" required />
+
+            </div>
+
+            <div>
+
+                <input type="checkbox" name="remember-me" required /> Lembrar-me
+
+            </div>
+
+            <input type="submit" value="Entrar">
+
+        </form>
+
+    </section>
+
+</body>
+
+</html>
