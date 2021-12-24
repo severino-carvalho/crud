@@ -83,13 +83,6 @@
 					</tr>
 
 					<tr>
-						<td>Senha:</td>
-						<td>
-							<input type="password" th:field="${usuario.senha}" />
-						</td>
-					</tr>
-
-					<tr>
 						<td>Sexo:</td>
 						<td>
 							<input type="radio" th:field="${usuario.sexo}" th:value="M" /> Masculino
@@ -117,12 +110,17 @@
 					</tr>
 
 					<tr>
-						<td>Anexo:</td>
+						<td>Foto:</td>
 						<td>
 							<input type="file" th:name="file" />
-							<input type="hidden" th:field="${usuario.arquivo.id}" />
+							<input type="hidden" th:field="${usuario.foto.id}" />
+						</td>
+					</tr>
 
-							<input type="submit" formaction="/usuarios/addAnexo" formmethod="post" value="Adicionar">
+					<tr>
+						<td>Senha:</td>
+						<td>
+							<input type="password" th:field="${usuario.senha}" />
 						</td>
 					</tr>
 
@@ -130,11 +128,12 @@
 						<td colspan="2" style="text-align: center;">
 							<input class="btn btn-conf" type="submit"
 								th:value="${usuario.id} == 0 ? Cadastrar : Editar" />
-							<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/"
+							<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/publico/home"
 								formmethod="GET" />
 							<input class="btn btn-reset" type="reset" value="Limpar" />
 						</td>
 					</tr>
+
 				</table>
 
 			</div>
@@ -156,6 +155,8 @@
 							</button>
 						</td>
 					</tr>
+
+
 				</table>
 
 				<input type="hidden" th:each="f, itemStat : ${usuario.formacoes}"
@@ -165,32 +166,7 @@
 					th:field="${usuario.formacoes[__${itemStat.index}__].nome}">
 
 			</div>
-			<div class="item-center" th:if="${usuario.arquivos} != null and ${!usuario.arquivos.empty}">
 
-				<table>
-					<caption>Anexos</caption>
-					<tr>
-						<th>Nome</th>
-						<th>Ação</th>
-					</tr>
-					<tr th:each="a : ${usuario.arquivos}">
-						<td th:text="${a.nomeArquivo}"></td>
-						<td>
-							<button class="btn material-icons" type="submit"
-								th:formaction="@{/usuarios/removerAnexo/} + ${a.id}" formmethod="post">
-								delete
-							</button>
-						</td>
-					</tr>
-				</table>
-
-				<input type="hidden" th:each="a, itemStat : ${usuario.arquivos}"
-					th:field="${usuario.arquivos[__${itemStat.index}__].id}">
-
-				<input type="hidden" th:each="a, itemStat : ${usuario.arquivos}"
-					th:field="${usuario.arquivos[__${itemStat.index}__].nomeArquivo}">
-
-			</div>
 		</form>
 	</section>
 

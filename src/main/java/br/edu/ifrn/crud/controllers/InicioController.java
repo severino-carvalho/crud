@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class InicioController {
 
-	@GetMapping("/")
+	@GetMapping("/publico/home")
 	public String inicio() {
-		return "inicio";
+		return "/inicio";
 	}
 
 	@GetMapping("/login")

@@ -61,8 +61,12 @@ public class CadastroUserController {
 
 	@PostMapping("/salvar")
 	@Transactional(readOnly = false)
-	public String salvarUser(@Valid Usuario usuario, BindingResult result, @RequestParam("file") MultipartFile file,
+	public String salvar(@Valid Usuario usuario, BindingResult result, @RequestParam("file") MultipartFile file,
 			RedirectAttributes attr, ModelMap modelo) {
+
+		if (usuario.getProfissao().getId() == 0) {
+			result.addError(new ObjectError("ProfissaoNUll", "Profissão não informada!"));
+		}
 
 		// Se houver erros no objeto usuário preenchido ele vai ser capturado no IF e
 		// não vai ser realizado o cadastro
@@ -77,13 +81,15 @@ public class CadastroUserController {
 				Arquivo fileInsert = new Arquivo(nomeArquivo, file.getContentType(), file.getBytes());
 				arquivoRepository.save(fileInsert);
 
+				if (usuario.getFoto() != null && usuario.getFoto().getId() != null && usuario.getFoto().getId() > 0) {
+					arquivoRepository.delete(usuario.getFoto());
+				}
+
+				usuario.setFoto(fileInsert);
 			} else {
-
+				usuario.setFoto(null);
 			}
 
-			if (usuario.getProfissao().getId() == 0) {
-				result.addError(new ObjectError("ProfissaoNUll", "Profissão não informada!"));
-			}
 			// Criptografando senha
 			String senhEncriptada = new BCryptPasswordEncoder().encode(usuario.getSenha());
 			usuario.setSenha(senhEncriptada);
@@ -150,39 +156,6 @@ public class CadastroUserController {
 		usuario.getFormacoes().add(usuario.getFormacao());
 
 		modelo.addAttribute("msgSucesso", usuario.getFormacao().getNome() + " adicionado as formações!");
-
-		return "/usuario/cadastro";
-	}
-
-	@PostMapping("/addAnexo")
-	@Transactional(readOnly = false)
-	public String addAnexo(Usuario usuario, @RequestParam("file") MultipartFile file, ModelMap modelo) {
-
-		System.out.println("\n\nAqui\n\n");
-
-		if (file.getSize() < 1) {
-			modelo.addAttribute("msgErro", "Sem arquivo para o anexo");
-			return "/usuario/cadastro";
-		}
-
-		if (usuario.getArquivos() == null) {
-			usuario.setArquivos(new ArrayList<>());
-		}
-
-		try {
-			String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
-			Arquivo fileInsert = new Arquivo(nomeArquivo, file.getContentType(), file.getBytes());
-
-			arquivoRepository.save(fileInsert);
-			usuario.setArquivo(fileInsert);
-
-			usuario.getArquivos().add(usuario.getArquivo());
-
-			modelo.addAttribute("msgSucesso", usuario.getArquivo().getNomeArquivo() + " adicionado aos anexos!");
-
-		} catch (Exception e) {
-			modelo.addAttribute("msgErro", "ERRO INTERNO NO SERVIDOR!");
-		}
 
 		return "/usuario/cadastro";
 	}

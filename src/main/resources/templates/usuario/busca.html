@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:fragment="~{/layout/layout}">
 
 <head>
 	<meta charset="UTF-8" />
@@ -22,97 +21,99 @@
 </head>
 
 <body>
-	<h1 style="text-align: center;">Busca de usuário</h1>
 
-	<div th:if="${msgSucesso} != false">
-		<b th:text="${msgSucesso}" style="color: green;"></b>
-		<br />
-	</div>
+	<section class="layout-content" layout:fragment="corpo">
+		<h1 style="text-align: center;">Busca de usuário</h1>
 
-	<div th:if="${msgErro} != false">
-		<b th:text="${msgErro}" style="color: red;"></b>
-		<br />
-	</div>
+		<div th:if="${msgSucesso} != false">
+			<b th:text="${msgSucesso}" style="color: green;"></b>
+			<br />
+		</div>
 
-	<form th:action="@{/usuarios/buscar}" method="GET">
-		<table>
-			<tr>
-				<td>Nome:</td>
-				<td>
-					<input type="text" th:name="nome" />
-				</td>
-			</tr>
-			<tr>
-				<td>Email:</td>
-				<td>
-					<input type="email" th:name="email" />
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="checkbox" th:name="mostrarTodosDados" th:value="true" />
-					Mostrar todos os dados do usuários
-				</td>
-			</tr>
+		<div th:if="${msgErro} != false">
+			<b th:text="${msgErro}" style="color: red;"></b>
+			<br />
+		</div>
 
-			<tr>
-				<td colspan="2" style="text-align: center;">
-					<input class="btn btn-conf" type="submit" value="Buscar" />
-					<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/" formmethod="GET" />
-					<input class="btn btn-reset" type="reset" value="Limpar" />
-				</td>
-			</tr>
-		</table>
-	</form>
+		<form th:action="@{/usuarios/buscar}" method="GET">
+			<table>
+				<tr>
+					<td>Nome:</td>
+					<td>
+						<input type="text" th:name="nome" />
+					</td>
+				</tr>
+				<tr>
+					<td>Email:</td>
+					<td>
+						<input type="email" th:name="email" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" th:name="mostrarTodosDados" th:value="true" />
+						Mostrar todos os dados do usuários
+					</td>
+				</tr>
 
-	<div th:if="${not #lists.isEmpty(usuariosEncontrados)}">
-		<table class="table">
-			<tr class="tr">
-				<td class="td">Foto:</td>
-				<th class="td">Nome:</th>
-				<th class="td">Email:</th>
-				<th class="td" th:if="${mostrarTodosDados == true}">Telefone</th>
-				<th class="td" th:if="${mostrarTodosDados == true}">Sexo</th>
-				<th class="td" th:if="${mostrarTodosDados == true}">Profissão</th>
-				<th class="td">Opções</th>
-				<th class="td">Download</th>
-			</tr>
-			<tr class="tr" th:each="u : ${usuariosEncontrados}">
-				<td class="td">
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input class="btn btn-conf" type="submit" value="Buscar" />
+						<input class="btn btn-cancel" type="submit" value="Cancelar" formaction="/publico/home"
+							formmethod="GET" />
+						<input class="btn btn-reset" type="reset" value="Limpar" />
+					</td>
+				</tr>
+			</table>
+		</form>
 
-					<div th:if="${u.arquivos != null}" th:each="a : ${u.arquivos}" style="display: flex; ">
-						<img th:src="@{/download/} + ${a.id} + '?salvar=false'" alt="" width="75px" height="55px" />
-					</div>
+		<div th:if="${not #lists.isEmpty(usuariosEncontrados)}">
+			<table class="table">
+				<tr class="tr">
+					<td class="td">Foto:</td>
+					<th class="td">Nome:</th>
+					<th class="td">Email:</th>
+					<th class="td" th:if="${mostrarTodosDados == true}">Telefone</th>
+					<th class="td" th:if="${mostrarTodosDados == true}">Sexo</th>
+					<th class="td" th:if="${mostrarTodosDados == true}">Profissão</th>
+					<th class="td">Opções</th>
+					<th class="td">Download</th>
+				</tr>
+				<tr class="tr" th:each="u : ${usuariosEncontrados}">
+					<td class="td">
+						<img th:if="${u.foto != null}" th:src="@{/download/} + ${u.foto.id} + '?salvar=false'"
+							alt="img_user" style="max-height: 128px;" />
 
-				</td>
-				<td class="td" th:text="${u.nome}"></td>
-				<td class="td" th:text="${u.email}"></td>
-				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.telefone}"></td>
-				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.sexo}"></td>
-				<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.profissao}"></td>
-				<td class="td">
-					<a th:href="'/usuarios/editar/' + ${u.id}">
-						Editar
-					</a> |
-					<a th:href="'/usuarios/remover/' + ${u.id}"
-						onclick="if(!confirm('Você deseja realemnte remover o usuário?')) return false">
-						Remover
-					</a>
-				</td>
-				<td>
-					<div th:if="${u.arquivos != null}" th:each="a : ${u.arquivos}">
-						<form th:if="${a != null}" th:action="@{/download/} + ${a.id} + '?salvar=true'" method="get">
-							<button type="submit" class="btn-down">
+
+					</td>
+					<td class="td" th:text="${u.nome}"></td>
+					<td class="td" th:text="${u.email}"></td>
+					<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.telefone}"></td>
+					<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.sexo}"></td>
+					<td class="td" th:if="${mostrarTodosDados == true}" th:text="${u.profissao}"></td>
+					<td class="td">
+						<a th:href="'/usuarios/editar/' + ${u.id}">
+							Editar
+						</a> |
+						<a th:href="'/usuarios/remover/' + ${u.id}"
+							onclick="if(!confirm('Você deseja realemnte remover o usuário?')) return false">
+							Remover
+						</a>
+					</td>
+					<td>
+						<form th:if="${u.foto != null}" th:action="@{/download/} + ${u.foto.id} + '?salvar=true'"
+							method="get">
+							<button type="submit">
 								<span class="material-icons">
 									download
 								</span>
 							</button>
 						</form>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</section>
 
 </body>
 
