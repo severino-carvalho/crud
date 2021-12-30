@@ -19,8 +19,8 @@ import javax.validation.constraints.*;
 @Entity
 public class Usuario {
 
-	// private static final String ADMIN = "ADMIN";
-	// private static final String USUARIO_COMUM = "COMUM";
+	public static final String ADMIN = "ADMIN";
+	public static final String USUARIO_COMUM = "COMUM";
 
 	// Atributos da classe
 	@Id
@@ -40,7 +40,7 @@ public class Usuario {
 
 	@Column(nullable = false) // MAPEA O ATRIBUTO PARA UM COLUNA NO BANCO DE DADOS
 	@NotBlank(message = "Campo 'Telefone' é obrigatório.") // Obriga o campo a não ser nulo ou não está em braco
-	@Size(min = 9, max = 9, message = "O campo 'Telefone' deve conter somente 9 dígitos.") // Obriga o campo ter um //
+	@Size(min = 6, message = "O campo 'Telefone' deve conter somente 9 dígitos.") // Obriga o campo ter um //
 																							// valor de 9 dígitos
 	private String telefone;
 
@@ -65,8 +65,8 @@ public class Usuario {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private Arquivo foto;
 
-	// @Column(nullable = false)
-	// private String perfil = USUARIO_COMUM;
+	@Column(nullable = false)
+	private String perfil = USUARIO_COMUM;
 
 	// Equals and HashCode
 	@Override
@@ -93,15 +93,13 @@ public class Usuario {
 
 	// GETs e SETs
 
-	/*
-	 * public static String getAdmin() {
-	 * return ADMIN;
-	 * }
-	 * 
-	 * public static String getUsuarioComum() {
-	 * return USUARIO_COMUM;
-	 * }
-	 */
+	public static String getAdmin() {
+		return ADMIN;
+	}
+
+	public static String getUsuarioComum() {
+		return USUARIO_COMUM;
+	}
 
 	public int getId() {
 		return id;
@@ -183,13 +181,12 @@ public class Usuario {
 		this.foto = foto;
 	}
 
-	/*
-	 * public String getPerfil() {
-	 * return perfil;
-	 * }
-	 * 
-	 * public void setPerfil(String perfil) {
-	 * this.perfil = perfil;
-	 * }
-	 */
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
 }
