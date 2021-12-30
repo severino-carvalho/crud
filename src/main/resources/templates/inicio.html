@@ -79,10 +79,10 @@
 
 	<h1 style="text-align: center;">CRUD Usuário</h1>
 
-	<a href="/usuarios/cadastro">Cadastrar usuário</a>
+	<a href="/usuarios/cadastro" sec:authorize="hasAuthority('ADMIN')">Cadastrar usuário</a>
 	<br />
 	<br />
-	<a href="/usuarios/busca">Buscar usuário</a>
+	<a href="/usuarios/busca" sec:authorize="isAuthenticated()">Buscar usuário</a>
 
 	<div>
 		<form th:action="@{/logout}" method="post">
