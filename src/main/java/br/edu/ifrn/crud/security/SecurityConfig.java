@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import br.edu.ifrn.crud.domains.Usuario;
 import br.edu.ifrn.crud.service.UsuarioService;
 
 /**
@@ -22,9 +23,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/style/**", "/images/**", "/script/**").permitAll()
-                .antMatchers("/publico/**").permitAll()
+                .antMatchers(
+                        "/style/**",
+                        "/images/**",
+                        "/script/**").permitAll()
                 
+                .antMatchers("/publico/**").permitAll()
+
+                .antMatchers(
+                        "/usuarios/cadastro",
+                        "/usuarios/salvar",
+                        "/usuarios/remover/**",
+                        "/usuarios/editar/**")
+                .hasAuthority(Usuario.ADMIN)
+
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -36,12 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout()
                     .logoutSuccessUrl("/login")
                 .and()
-                    .rememberMe();
+                   .rememberMe();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(service).passwordEncoder(new BCryptPasswordEncoder());    
+        auth.userDetailsService(service).passwordEncoder(new BCryptPasswordEncoder());
     }
 
 }
