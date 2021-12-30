@@ -1,8 +1,7 @@
 package br.edu.ifrn.crud.service;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,7 +26,7 @@ public class UsuarioService implements UserDetailsService {
         return new User(
                 usuario.getEmail(),
                 usuario.getSenha(),
-                new ArrayList<>());
+                AuthorityUtils.createAuthorityList(usuario.getPerfil()));
     }
 
 }
